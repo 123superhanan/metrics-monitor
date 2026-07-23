@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+pandas
+numpy
+scikit-learn
+tensorflow
+matplotlib
+chromadb
+requests
+python-multipart
