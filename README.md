@@ -2,50 +2,24 @@
 An intelligent production incident assistant that combines time-series deep learning (LSTM and GRU) for anomaly forecasting with Retrieval-Augmented Generation (RAG) to map system telemetry directly to actionable recovery runbooks.
 This platform continuously evaluates streaming infrastructure metrics, forecasts imminent service degradations, and surfaces the precise remediation procedures engineers need during a high-severity incident.
 ------------------------------
-## Detailed Directory Breakdown
+## Project Structure
 
+```text
 metrics-monitor/
-├── chroma_db/                  # Persistent local vector database instances
-├── saved_models/               # Serialized deep learning model checkpoints (.pth / .h5)
 ├── data/
-│   ├── raw/                    # Active and historical telemetry streams (metrics.csv)
-│   └── runbooks/               # Engineering documentation for standard incident profiles
-│       ├── cpu_spike.md        # Triage workflows for compute exhaustion
-│       ├── error_rate_surge.md # Remediation paths for HTTP 5xx or RPC error bursts
-│       ├── latency_increase.md # Mitigation steps for downstream network/db blockages
-│       └── memory_leak.md      # Garbage collection and container restart strategies
-├── notebooks/
-│   └── exploration.ipynb       # Exploratory Data Analysis (EDA) and signal-to-noise testing
+│   ├── raw/               # Synthetic and historic metrics (.csv)
+│   └── runbooks/          # System recovery documentation (.md)
+├── notebooks/             # Exploratory data analysis
+├── saved_models/          # Trained LSTM/GRU model artifacts
+├── chroma_db/             # Local vector database for runbooks
 ├── src/
-│   ├── api/                    # Core FastAPI backend serving layer
-│   │   ├── main.py             # Server initialization, middleware, and CORS configuration
-│   │   ├── routes_analyze.py   # Statistical trend analysis and threshold validation
-│   │   ├── routes_explain.py   # RAG pipeline orchestration mapping telemetry to text
-│   │   └── routes_predict.py   # Inference endpoints hosting time-series model evaluations
-│   ├── data/                   # Telemetry data pipeline
-│   │   ├── encode.py           # Feature scaling, normalization, and sequence formatting
-│   │   ├── generate_data.py    # Synthetic telemetry engine injecting system anomalies
-│   │   └── preprocess.py       # Missing-value imputation, outlier removal, and alignment
-│   ├── evaluation/             # Metrics and performance validation
-│   │   ├── metrics.py          # Custom tracking for forecasting loss (MSE, MAE, R-squared)
-│   │   └── plots.py            # Automated loss curve generation and prediction charts
-│   ├── models/                 # Deep learning model zoo
-│   │   ├── baseline.py         # Naive/Moving Average statistical reference benchmarks
-│   │   ├── gru_model.py        # Gated Recurrent Unit network architecture definition
-│   │   ├── lstm_model.py       # Long Short-Term Memory network architecture definition
-│   │   └── train.py            # Optimization loops, validation checks, and serialization
-│   └── rag/                    # Knowledge base extraction and embedding systems
-│       ├── chunker.py          # Document parsing strategy maximizing contextual bounds
-│       ├── embedder.py         # Local text vectorization adapter (e.g., SentenceTransformers)
-│       ├── ingest.py           # Multi-threaded file scraper and catalog processing pipeline
-│       ├── loader.py           # File system reader parsing raw markdown document trees
-│       ├── prompt_maker.py     # Template builder synthesizing alert contexts and runbooks
-│       └── vector_store.py     # Client interface abstracting the ChromaDB collection layer
-└── static/                     # Single-Page Application (SPA) monitoring UI
-    ├── index.html              # Layout skeleton housing charts and query widgets
-    ├── script.js               # Reactive DOM manipulator executing asynchronous API polls
-    └── style.css               # Material-dark themed visual interface specifications
-
+│   ├── api/               # FastAPI endpoints (predict, analyze, explain)
+│   ├── data/              # Data generation, preprocessing, and encoding
+│   ├── evaluation/        # Validation metrics and charting scripts
+│   ├── models/            # Model architectures and training loops
+│   └── rag/               # Document ingestion, embedding, and vector storage
+└── static/                # Vanilla HTML5/CSS3/JS dashboard frontend
+```
 ------------------------------
 ## Technical Architecture & Core Pipelines## 1. Predictive Telemetry Pipeline
 The telemetry engine extracts patterns from multidimensional tracking streams (CPU utilization, memory usage, request duration, error percentages) to anticipate threshold breaches before they occur.
