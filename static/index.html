@@ -1,0 +1,46 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Metrics Monitor</title>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Metrics Monitor</h1>
+
+      <div class="card">
+        <input id="cpu_usage" placeholder="CPU Usage" />
+        <input id="memory_usage" placeholder="Memory Usage" />
+        <input id="disk_usage" placeholder="Disk Usage" />
+        <input id="disk_io" placeholder="Disk IO" />
+
+        <input id="network_in" placeholder="Network In" />
+        <input id="network_out" placeholder="Network Out" />
+
+        <input id="response_time" placeholder="Response Time" />
+        <input id="request_count" placeholder="Request Count" />
+
+        <input id="error_rate" placeholder="Error Rate" />
+        <input id="active_users" placeholder="Active Users" />
+
+        <input id="service_name" placeholder="Service Name ID" />
+        <input id="region" placeholder="Region ID" />
+
+        <input id="deployment_version" placeholder="Deployment Version ID" />
+
+        <input id="day_of_week" placeholder="Day Of Week" />
+        <input id="hour" placeholder="Hour" />
+
+        <button onclick="predict()">Analyze Metrics</button>
+      </div>
+
+      <div class="result">
+        <h2>Result</h2>
+        <p id="output">Waiting for input...</p>
+      </div>
+    </div>
+
+    <script src="script.js"></script>
+  </body>
+</html>
