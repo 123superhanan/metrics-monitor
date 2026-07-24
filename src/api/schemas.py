@@ -12,8 +12,8 @@ class MetricInput(BaseModel):
     request_count: int
     error_rate: float
     active_users: int
-    service_name: int
-    region: int
-    deployment_version: int
-    day_of_week: int
+    service_name: str          # changed from int
+    region: str                # changed from int
+    deployment_version: str    # changed from int
+    day_of_week: str           # changed from int
     hour: int

@@ -14,31 +14,49 @@ async function predict() {
     error_rate: Number(document.getElementById("error_rate").value),
     active_users: Number(document.getElementById("active_users").value),
 
-    service_name: Number(document.getElementById("service_name").value),
-    region: Number(document.getElementById("region").value),
-    deployment_version: Number(
-      document.getElementById("deployment_version").value,
-    ),
+    service_name: document.getElementById("service_name").value,
+    region: document.getElementById("region").value,
+    deployment_version: document.getElementById("deployment_version").value,
 
-    day_of_week: Number(document.getElementById("day_of_week").value),
+    day_of_week: document.getElementById("day_of_week").value,
     hour: Number(document.getElementById("hour").value),
   };
 
   try {
-    const response = await fetch("http://127.0.0.1:8000/predict", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+    const [rfResponse, lstmResponse] = await Promise.all([
+      fetch("http://127.0.0.1:8000/predict", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }),
 
-    const result = await response.json();
+      fetch("http://127.0.0.1:8000/predict-lstm", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      }),
+    ]);
+
+    const rfResult = await rfResponse.json();
+    const lstmResult = await lstmResponse.json();
 
     document.getElementById("output").innerHTML = `
-            Prediction: ${result.prediction}<br>
-            Class: ${result.class}
-            `;
+
+      <h3>Random Forest</h3>
+      Prediction: ${rfResult.prediction}<br>
+      Class: ${rfResult.class}
+
+
+      <h3>LSTM</h3>
+      Prediction: ${lstmResult.prediction}<br>
+      Class: ${lstmResult.class ?? "Collecting sequence"}<br>
+      Confidence: ${lstmResult.confidence ?? "N/A"}
+
+    `;
   } catch (error) {
     document.getElementById("output").innerHTML = "API connection failed";
 

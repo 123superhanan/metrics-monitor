@@ -24,12 +24,22 @@
         <input id="error_rate" placeholder="Error Rate" />
         <input id="active_users" placeholder="Active Users" />
 
-        <input id="service_name" placeholder="Service Name ID" />
-        <input id="region" placeholder="Region ID" />
+        <input
+          id="service_name"
+          placeholder="Service Name"
+          value="payment-service"
+        />
 
-        <input id="deployment_version" placeholder="Deployment Version ID" />
+        <input id="region" placeholder="Region" value="ap-southeast" />
 
-        <input id="day_of_week" placeholder="Day Of Week" />
+        <input
+          id="deployment_version"
+          placeholder="Deployment Version"
+          value="v1.2.5"
+        />
+
+        <input id="day_of_week" placeholder="Day Of Week" value="Thursday" />
+
         <input id="hour" placeholder="Hour" />
 
         <button onclick="predict()">Analyze Metrics</button>

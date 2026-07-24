@@ -3,7 +3,7 @@ import pandas as pd
 
 
 def load_data(file_path):
-    return pd.read_csv(",,/../data/raw/metrics.csv")
+    return pd.read_csv("../../data/raw/metrics.csv")
 
 
 def preprocess_data(df):

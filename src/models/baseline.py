@@ -57,55 +57,35 @@ def evaluate_model(model, X_test, y_test):
     print(confusion_matrix(y_test, predictions))
 
 
-def save_model(model, scaler):
+def save_model(model, scaler, column_order):
     Path("saved_models").mkdir(exist_ok=True)
 
-    joblib.dump(
-        model,
-        "saved_models/random_forest_model.pkl"
-    )
-
-    joblib.dump(
-        scaler,
-        "saved_models/scaler.pkl"
-    )
+    joblib.dump(model, "saved_models/random_forest_model.pkl")
+    joblib.dump(scaler, "saved_models/scaler.pkl")
+    joblib.dump(column_order, "saved_models/column_order.pkl")
 
 
 def main():
     file_path = "data/processed/metrics_encoded.csv"
 
     df = load_data(file_path)
-
     X, y = prepare_data(df)
 
+    # capture column order BEFORE train_test_split/scaling turns X into arrays
+    column_order = X.columns.tolist()
+
     X_train, X_test, y_train, y_test = train_test_split(
-        X,
-        y,
-        test_size=0.2,
-        random_state=42,
-        stratify=y
+        X, y, test_size=0.2, random_state=42, stratify=y
     )
 
     scaler = StandardScaler()
-
     X_train = scaler.fit_transform(X_train)
     X_test = scaler.transform(X_test)
 
-    model = train_model(
-        X_train,
-        y_train
-    )
+    model = train_model(X_train, y_train)
+    evaluate_model(model, X_test, y_test)
 
-    evaluate_model(
-        model,
-        X_test,
-        y_test
-    )
-
-    save_model(
-        model,
-        scaler
-    )
+    save_model(model, scaler, column_order)
 
 
 if __name__ == "__main__":
